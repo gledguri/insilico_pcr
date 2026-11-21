@@ -1,0 +1,9 @@
+# Species-specific qPCR assays (step 5). Saved from the app, or add your own:
+# My-cod-assay:
+#   target: Gadus morhua
+#   marker: COI
+#   forward: ...
+#   reverse: ...
+#   probe: ...          # leave empty for SYBR Green
+#   probe_type: TaqMan  # TaqMan, MGB or none
+#   reference: ...

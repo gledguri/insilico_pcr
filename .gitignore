@@ -1,0 +1,25 @@
+# Local software environment
+env/
+.venv/
+venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+
+# Your data and results live in the data folder (default: workspace/), never in git
+workspace/
+data/
+results/
+logs/
+
+# Local settings: data folder location, NCBI email and API key
+ispcr.local.yaml
+config/*.local.yaml
+.streamlit/secrets.toml
+
+# Misc
+.DS_Store
+*.bak
+improvement.pdf
+mockups/
+.claude/settings.local.json

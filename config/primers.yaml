@@ -1,0 +1,49 @@
+MiFish-U:
+  marker: 12S
+  forward: GTCGGTAAAACTCGTGCCAGC
+  reverse: CATAGTGGGGTATCTAATCCCAGTTTG
+  product_min: 190
+  product_max: 260
+  reference: Miya et al. 2015, R Soc Open Sci 2:150088
+MiFish-E:
+  marker: 12S
+  forward: GTTGGTAAATCTCGTGCCAGC
+  reverse: CATAGTGGGGTATCTAATCCTAGTTTG
+  product_min: 190
+  product_max: 260
+  reference: Miya et al. 2015, R Soc Open Sci 2:150088 (elasmobranchs)
+Teleo:
+  marker: 12S
+  forward: ACACCGCCCGTCACTCT
+  reverse: CTTCCGGTACACTTACCATG
+  product_min: 70
+  product_max: 140
+  reference: Valentini et al. 2016, Mol Ecol 25:929-942
+Riaz-12S-V5:
+  marker: 12S
+  forward: ACTGGGATTAGATACCCC
+  reverse: TAGAACAGGCTCCTCTAG
+  product_min: 90
+  product_max: 180
+  reference: Riaz et al. 2011, Nucleic Acids Res 39:e145
+Fish16S:
+  marker: 16S
+  forward: GACCCTATGGAGCTTTAGAC
+  reverse: CGCTGTTATCCCTADRGTAACT
+  product_min: 180
+  product_max: 260
+  reference: Berry et al. 2017, Ecol Evol 7:5435-5453 (Fish16sF/D, 16s2R-degenerate)
+Leray-COI:
+  marker: COI
+  forward: GGWACWGGWTGAACWGTWTAYCCYCC
+  reverse: TAIACYTCIGGRTGICCRAARAAYCA
+  product_min: 300
+  product_max: 370
+  reference: Leray et al. 2013, Front Zool 10:34 (mlCOIintF / jgHCO2198)
+FishF1-R1:
+  marker: COI
+  forward: TCAACCAACCACAAAGACATTGGCAC
+  reverse: TAGACTTCTGGGTGGCCAAAGAATCA
+  product_min: 600
+  product_max: 720
+  reference: Ward et al. 2005, Phil Trans R Soc B 360:1847-1857

@@ -1,0 +1,10 @@
+# Local install with conda:  conda env create -p ./env -f environment.yml
+name: ispcr
+channels: [conda-forge, bioconda]
+dependencies:
+  - python=3.12
+  - mafft
+  - pip
+  - pip:
+      - -r requirements.txt
+      - -e .

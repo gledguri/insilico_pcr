@@ -1,0 +1,139 @@
+# ispcr settings (defaults, committed to git). Private values go in config/settings.local.yaml.
+# Every output is written inside the data folder (see README.md).
+# See README.md for the folder layout.
+
+ncbi:
+  email: ""          # NCBI asks for a contact email. Set it in config/settings.local.yaml or NCBI_EMAIL.
+  api_key: ""        # Optional, ~3x faster downloads. Set it in config/settings.local.yaml or NCBI_API_KEY.
+  tool: ispcr
+  batch_size: 50     # records per efetch call
+
+taxonomy:
+  use_worms: true    # check names against WoRMS (marine species register)
+  marine_only: false
+
+download:
+  max_mitogenomes_per_species: 5
+  max_gene_records_per_species: 30
+  prefer_refseq: true          # take RefSeq (NC_) mitogenomes first
+  include_mitogenomes_for_genes: true   # also cut the gene out of mitogenomes
+  mitogenome_min_len: 14000
+  mitogenome_max_len: 20000
+
+# Gene regions. "feature_regex" matches GenBank feature qualifiers (gene / product / note),
+# case-insensitive. "query" is the NCBI search term added to the taxon filter.
+markers:
+  12S:
+    feature_types: [rRNA, gene, misc_RNA, misc_feature]
+    feature_regex: '\b(12s|rrns|rrn12|mt-rnr1|s-rrna|srrna|small subunit ribosomal rna)\b'
+    query: '(12S[All Fields] OR rrnS[Gene] OR "small subunit ribosomal RNA"[All Fields])'
+    min_len: 100
+    max_len: 1200
+    query_max_len: 6000
+  16S:
+    feature_types: [rRNA, gene, misc_RNA, misc_feature]
+    feature_regex: '\b(16s|rrnl|rrn16|mt-rnr2|l-rrna|lrrna|large subunit ribosomal rna)\b'
+    query: '(16S[All Fields] OR rrnL[Gene] OR "large subunit ribosomal RNA"[All Fields])'
+    min_len: 100
+    max_len: 1900
+    query_max_len: 6000
+  COI:
+    feature_types: [CDS, gene]
+    feature_regex: '\b(coi|cox1|co1|coxi|mt-co1|cytochrome c oxidase subunit (1|i)|cytochrome oxidase subunit (1|i))\b'
+    query: '(COI[Gene] OR COX1[Gene] OR CO1[Gene] OR "cytochrome c oxidase subunit I"[All Fields] OR "cytochrome oxidase subunit 1"[All Fields])'
+    min_len: 200
+    max_len: 1700
+    query_max_len: 6000
+  CYTB:
+    feature_types: [CDS, gene]
+    feature_regex: '\b(cytb|cyt b|cob|mt-cyb|cytochrome b)\b'
+    query: '(CYTB[Gene] OR cytb[Gene] OR "cytochrome b"[All Fields])'
+    min_len: 200
+    max_len: 1300
+    query_max_len: 6000
+
+qc:
+  max_ambiguous_fraction: 0.01   # fraction of non-ACGT bases allowed
+  flag_misidentified: true       # flag records closer to another genus than to their own species
+  remove_misidentified: false    # true = drop flagged records from PCR and statistics
+  min_overlap: 50                # minimum shared aligned positions to compute a distance
+
+align:
+  mafft_args: ["--auto", "--adjustdirection"]
+  threads: -1
+
+pcr:
+  max_mismatches: 3              # per primer
+  max_3prime_mismatches: 1       # within the 3' window
+  three_prime_window: 5          # bases counted as the 3' end
+  search_max_mismatches: 7       # sites worse than this are not considered binding at all
+  max_product_search: 3000       # longest product considered while searching
+  coverage_slack: 3              # alignment columns of slack when deciding if a record covers a primer site
+
+thermo:                          # primer3 conditions (mM / nM)
+  mv_conc: 50
+  dv_conc: 1.5
+  dntp_conc: 0.6
+  dna_conc: 250
+
+resolution:
+  distance_model: k2p            # k2p or p
+  level_ranks: [species, genus, family]
+
+design:
+  primer_min_len: 18
+  primer_max_len: 24
+  product_min: 120               # product length incl. primers (bp)
+  product_max: 300
+  max_degeneracy: 4
+  min_base_freq: 0.05            # bases rarer than this at a column are not added as degeneracy
+  max_gap_fraction: 0.15         # skip primer windows with more gaps than this
+  tm_min: 54
+  tm_max: 64
+  gc_min: 35
+  gc_max: 65
+  max_homopolymer: 4
+  max_tm_diff: 5
+  keep_per_direction: 300
+  max_pairs: 50
+
+# In silico qPCR (step 5): is a primer + probe assay specific to ONE target species?
+# Each record gets one outcome:
+#   detected  amplifies and the probe binds (all "detect_" limits hold)
+#   blocked   no amplification or no probe signal (any "block_" limit is reached)
+#   at_risk   anything in between: late or weak amplification is possible
+qpcr:
+  rules:
+    three_prime_window: 5        # bases counted as the primer 3' end
+    coverage_slack: 2            # oligo bases a record may lack at its ends and still be tested
+    detect_primer_mm: 2          # detected: at most this many mismatches per primer ...
+    detect_primer_3prime: 0      # ... none in the 3' window ...
+    detect_probe_mm: 1           # ... and at most this many in the probe
+    block_primer_3prime: 2       # blocked: this many mismatches in the 3' window of one primer
+    block_primer_mm: 4           # blocked: this many mismatches in one primer
+    block_pair_mm: 5             # blocked: this many in both primers together
+    block_probe_mm: 3            # blocked: this many in the probe
+  checks:                        # oligo guidelines (MIQE / TaqMan design rules), shown as pass or check
+    primer_len: [18, 25]
+    primer_tm: [57, 63]          # primer3 Tm with the 'thermo' conditions above
+    max_tm_diff: 2
+    gc: [35, 65]
+    max_3prime_gc: 3             # G/C among the last 5 bases
+    max_run: 3                   # longest run of one base
+    min_hairpin_dg: -3           # kcal/mol
+    min_dimer_dg: -9
+    amplicon: [50, 150]          # bp incl. primers (short amplicons suit degraded eDNA)
+    probe_len_taqman: [18, 30]
+    probe_len_mgb: [13, 20]
+    probe_tm_above_primers: [5, 10]
+    probe_gc: [30, 80]
+  design:
+    primer_min_len: 18
+    primer_max_len: 25
+    product_min: 60
+    product_max: 150
+    probe_type: TaqMan           # TaqMan, MGB or none (SYBR Green)
+    target_max_mismatches: 0     # oligos must match every record of the target species
+    min_target_coverage: 0.5     # share of the target's records that must cover an oligo site
+    keep_per_direction: 300
+    keep_pairs: 80

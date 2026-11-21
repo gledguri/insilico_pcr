@@ -1,0 +1,42 @@
+[server]
+headless = true          # no first-run email prompt; run_app.sh opens the browser itself
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"  # hides Deploy
+
+# White theme. The dark "Night bench" theme is kept in config.dark.toml.bak.
+[theme]
+base = "light"
+primaryColor = "#0B6C77"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F3F6F7"
+textColor = "#0F1A1F"
+borderColor = "#DDE4E7"
+dataframeBorderColor = "#E6ECEE"
+dataframeHeaderBackgroundColor = "#F6F8F9"
+dataframeHeaderTextColor = "#5A6B73"
+showWidgetBorder = true
+linkColor = "#0B6C77"
+codeTextColor = "#33454D"
+codeBackgroundColor = "#F6F8F9"
+redColor = "#C43D33"
+orangeColor = "#B5761A"
+yellowColor = "#B5761A"
+greenColor = "#2C7A51"
+blueColor = "#2F6DCF"
+grayColor = "#5A6B73"
+baseRadius = "7px"
+baseFontSize = 14
+headingFontWeights = [600, 600, 600]
+metricValueFontWeight = 600
+font = "IBM Plex Sans:https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+codeFont = "IBM Plex Mono:https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+showSidebarBorder = true
+
+[theme.sidebar]
+backgroundColor = "#F6F8F9"
+secondaryBackgroundColor = "#FFFFFF"
+borderColor = "#E3E8EB"

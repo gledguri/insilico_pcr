@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ispcr"
+version = "0.2.0"
+description = "In silico PCR, species resolution statistics and primer design for mitochondrial markers"
+requires-python = ">=3.10"
+dependencies = [
+  "biopython", "pandas", "numpy", "scipy", "pyyaml", "requests",
+  "primer3-py", "plotly", "streamlit", "logomaker", "matplotlib", "pyarrow", "reportlab",
+]
+
+[project.scripts]
+ispcr = "ispcr.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
